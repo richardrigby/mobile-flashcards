@@ -126,7 +126,7 @@ const DeckStack = createStackNavigator({
   DeckDetails: {
     screen: Deck,
     navigationOptions: ({ navigation }) => ({
-      title: '[deckTitle]',
+      deck: navigation.state.params.deck,
     }),
   },
 });
@@ -141,7 +141,7 @@ const AddDeckStack = createStackNavigator({
   AddDeckDetails: {
     screen: SettingsDetailsScreen,
     navigationOptions: ({ navigation }) => ({
-      title: '[deckTitle]',
+      title: navigation.state.params.title,
     }),
   },
 });

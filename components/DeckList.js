@@ -13,6 +13,7 @@ import {
   saveDeckTitle,
   addCardToDeck,
 } from '../AsyncStorageHelpers';
+import { lightPurp, white } from '../utils/colors';
 
 class ListItem extends React.PureComponent {
   _onPress = () => {
@@ -20,14 +21,21 @@ class ListItem extends React.PureComponent {
   };
 
   render() {
-    const textColor = this.props.selected ? 'red' : 'black';
+    // const textColor = this.props.selected ? 'red' : 'black';
+    const { title, cardCount } = this.props;
     return (
       // <Text>{this.props.title}</Text>
-      <TouchableOpacity onPress={this._onPress}>
-        <View>
-          <Text style={styles.listItem}>{this.props.title}</Text>
-        </View>
-      </TouchableOpacity>
+      // <TouchableOpacity onPress={this._onPress}>
+      //   <View>
+      //     <Text style={styles.listItem}>{this.props.title}</Text>
+      //   </View>
+      // </TouchableOpacity>
+      <View style={styles.listItem}>
+        <Button
+          title={title + ' (' + cardCount + ' cards)'}
+          onPress={this._onPress}
+        />
+      </View>
     );
   }
 }
@@ -38,8 +46,8 @@ class DeckList extends Component {
   _keyExtractor = (item, index) => item.title;
   // _keyExtractor = (item, index) => Math.random().toString();
 
-  _onPressItem = id => {
-    console.log('id:', id);
+  _onPressItem = (id, item) => {
+    // console.log('id:', id);
     // updater functions are preferred for transactional updates
     this.setState(state => {
       // copy the map rather than modifying state.
@@ -47,17 +55,20 @@ class DeckList extends Component {
       selected.set(id, !selected.get(id)); // toggle
       return { selected };
     });
-    this.props.navigation.navigate('DeckDetails', { title: id });
+
+    this.props.navigation.navigate('DeckDetails', { deck: item });
   };
 
   _renderItem = ({ item }) => {
+    console.log('item:', item);
     return (
       <ListItem
         id={item.title}
         // id={Math.random().toString()}
-        onPressItem={this._onPressItem}
+        onPressItem={id => this._onPressItem(id, item)}
         // selected={!!this.state.selected.get(item.id)}
         title={item.title}
+        cardCount={item.questions.length}
       />
     );
   };
@@ -69,14 +80,6 @@ class DeckList extends Component {
       }
     });
   }
-
-  // async fetchData() {
-  //   console.log('fetchData:');
-  //   const decks = await getDecks();
-  //   // console.log('Decks object:', decks);
-  //   console.log('Decks array :', Object.values(decks));
-  //   return decks;
-  // }
 
   render() {
     if (this.state.decks.length === 0) {
@@ -110,10 +113,10 @@ class DeckList extends Component {
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
         />
-        <Button
+        {/* <Button
           title="Go to Deck Details"
           onPress={() => this.props.navigation.navigate('DeckDetails')}
-        />
+        /> */}
       </View>
     );
   }
@@ -125,13 +128,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // backgroundColor: "#fff",
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
   listItem: {
     flex: 1,
-    backgroundColor: '#f4f',
-    // alignItems: "center",
-    // justifyContent: "center"
+    backgroundColor: white,
+    margin: 6,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
   },
 });
