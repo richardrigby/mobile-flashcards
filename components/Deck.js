@@ -1,19 +1,59 @@
 import React, { Component } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, StyleSheet } from 'react-native';
+import { purple, lightPurp } from '../utils/colors';
 
 class Deck extends Component {
+  handleAddCard = deck => {
+    this.props.navigation.navigate('AddQuestion', { deck });
+  };
+
+  handleStartQuiz = deck => {
+    this.props.navigation.navigate('Quiz', { deck });
+  };
+
   render() {
     const { deck } = this.props.navigation.state.params;
 
     return (
-      <View>
-        <Text>{deck.title}</Text>
-        <Text>{deck.questions.length + ' cards'}</Text>
-        <Button title="Add Card" />
-        <Button title="Start Quiz" />>
+      <View style={styles.container}>
+        <Text style={styles.cardTitle}>{deck.title}</Text>
+        <Text style={styles.cardNumber}>
+          {deck.questions.length + ' cards'}
+        </Text>
+        <Button title="Add Card" onPress={() => this.handleAddCard(deck)} />
+        <Button
+          title="Start Quiz"
+          onPress={() => this.handleStartQuiz(deck)}
+        />>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cardTitle: {
+    fontSize: 46,
+    fontWeight: 'bold',
+    marginBottom: 4,
+    color: purple,
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+  },
+  cardNumber: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    marginBottom: 44,
+    color: lightPurp,
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+  },
+});
 
 export default Deck;

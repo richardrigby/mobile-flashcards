@@ -1,17 +1,24 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
+import { getDecks, saveDeckTitle } from '../utils/AsyncStorageHelpers';
+
 class AddDeck extends Component {
   constructor(props) {
     super(props);
     this.state = { text: '' };
   }
 
-  handleNewDeckSubmit(navigate) {
-    if (this.state.text === '') {
+  async handleNewDeckSubmit(navigate) {
+    const title = this.state.text;
+    this.setState({ text: '' });
+    if (title === '') {
       return;
     }
-    navigate('AddDeckDetails', { title: this.state.text });
+
+    await saveDeckTitle(title);
+    const decks = await getDecks();
+    navigate('DecksTab', { screenProps: { decks } });
   }
 
   render() {
@@ -27,7 +34,7 @@ class AddDeck extends Component {
             value={this.state.text}
           />
           <Button
-            title="Submit"
+            title="Create Deck"
             onPress={() => this.handleNewDeckSubmit(navigate)}
             style={{ margin: 24 }}
           />
