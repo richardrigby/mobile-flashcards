@@ -7,6 +7,10 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import { purple, lightPurp } from '../utils/colors';
+import {
+  clearLocalNotification,
+  setLocalNotification,
+} from '../utils/notifications';
 
 class Quiz extends Component {
   constructor(props) {
@@ -38,8 +42,8 @@ class Quiz extends Component {
 
   handleSelfMarkBtnClick = isCorrect => {
     const currentCardIndex = this.state.currentCardIndex;
-    let cards = this.state.cards;
-    let currentCard = cards[this.state.currentCardIndex];
+    let { cards } = this.state;
+    let currentCard = cards[currentCardIndex];
 
     currentCard = {
       ...currentCard,
@@ -48,7 +52,7 @@ class Quiz extends Component {
 
     cards[currentCardIndex] = currentCard;
 
-    if (this.state.currentCardIndex < this.state.cards.length - 1) {
+    if (currentCardIndex < this.state.cards.length - 1) {
       this.setState(prevState => ({
         currentCardIndex: prevState.currentCardIndex + 1,
         cards,
@@ -75,7 +79,7 @@ class Quiz extends Component {
         <View style={styles.container}>
           <View>
             <Text style={[styles.title, { marginTop: 24 }]}>COMLETE</Text>
-            <Text style={{ marginTop: 24, fontSize: 18, textAlign: 'center' }}>
+            <Text style={styles.completionText}>
               You got {numCorrect} out of {cards.length} questions correct.
             </Text>
           </View>
@@ -157,6 +161,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     alignItems: 'flex-start',
   },
+  completionText: { marginTop: 24, fontSize: 18, textAlign: 'center' },
   buttonText: {
     color: 'white',
     fontSize: 20,
