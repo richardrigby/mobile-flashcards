@@ -18,13 +18,16 @@ class Deck extends Component {
       <View style={styles.container}>
         <Text style={styles.cardTitle}>{deck.title}</Text>
         <Text style={styles.cardNumber}>
-          {deck.questions.length + ' cards'}
+          {deck.questions.length +
+            (deck.questions.length === 1 ? ' card' : ' cards')}
         </Text>
         <Button title="Add Card" onPress={() => this.handleAddCard(deck)} />
-        <Button
-          title="Start Quiz"
-          onPress={() => this.handleStartQuiz(deck)}
-        />>
+        {!!deck.questions.length && (
+          <Button
+            title="Start Quiz"
+            onPress={() => this.handleStartQuiz(deck)}
+          />
+        )}
       </View>
     );
   }
