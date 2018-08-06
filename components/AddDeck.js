@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  KeyboardAvoidingView,
+} from 'react-native';
 
-import { getDecks, saveDeckTitle } from '../utils/AsyncStorageHelpers';
+import { getDeck, saveDeckTitle } from '../utils/AsyncStorageHelpers';
 
 class AddDeck extends Component {
   constructor(props) {
@@ -17,14 +24,15 @@ class AddDeck extends Component {
     }
 
     await saveDeckTitle(title);
-    const decks = await getDecks();
-    navigate('DecksTab', { screenProps: { decks } });
+    const deck = await getDeck(title);
+    // navigate('DecksTab', { screenProps: { decks } });
+    navigate('DeckDetails', { deck });
   }
 
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
         <Text style={styles.title}>What is the title of your new deck?</Text>
         <View style={{ marginBottom: 24 }}>
           <TextInput
@@ -39,7 +47,7 @@ class AddDeck extends Component {
             style={{ margin: 24 }}
           />
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
