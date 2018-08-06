@@ -1,3 +1,7 @@
+# Mobile Flash Cards
+
+Mobile Flash Cards is a study aimed to help a student to study. The user is able to add one or more decks, where each deck can hold one or more cards. Each card contains a question on one side and hte answer on the other side. The user can show the answer to check if they were corrent or not and then the user can self mark by entering wheather or not the had the correct answer.
+
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
 ### Getting Started
@@ -19,10 +23,6 @@ npm start --reset-cache
 # or
 yarn start --reset-cache
 ```
-
-#### `npm test`
-
-Runs the [jest](https://github.com/facebook/jest) test runner on your tests.
 
 #### `npm run ios`
 
