@@ -5,10 +5,9 @@ const APP_STORAGE_KEY = 'mobile-flashcards-app-data';
 
 // getDecks: return all of the decks along with their titles, questions, and answers.
 export const getDecks = async () => {
-  // resetStorage();
   let appJsonData = await AsyncStorage.getItem(APP_STORAGE_KEY);
   if (appJsonData === null) {
-    appJsonData = initStorage();
+    appJsonData = await initStorage();
   }
 
   const appData = JSON.parse(appJsonData);
@@ -19,7 +18,7 @@ export const getDecks = async () => {
 export const getDeck = async id => {
   let appJsonData = await AsyncStorage.getItem(APP_STORAGE_KEY);
   if (appJsonData === null) {
-    appJsonData = initStorage();
+    appJsonData = await initStorage();
   }
 
   const appData = JSON.parse(appJsonData);
@@ -30,7 +29,7 @@ export const getDeck = async id => {
 export const saveDeckTitle = async title => {
   let appJsonData = await AsyncStorage.getItem(APP_STORAGE_KEY);
   if (appJsonData === null) {
-    appJsonData = initStorage();
+    appJsonData = await initStorage();
   }
 
   const appData = JSON.parse(appJsonData);
@@ -51,7 +50,7 @@ export const saveDeckTitle = async title => {
 export const addCardToDeck = async (title, card) => {
   let appJsonData = await AsyncStorage.getItem(APP_STORAGE_KEY);
   if (appJsonData === null) {
-    appJsonData = initStorage();
+    appJsonData = await initStorage();
   }
 
   const appData = JSON.parse(appJsonData);
@@ -73,13 +72,12 @@ export const addCardToDeck = async (title, card) => {
 };
 
 const initStorage = async () => {
-  await AsyncStorage.setItem(APP_STORAGE_KEY, '{}');
+  await AsyncStorage.setItem(APP_STORAGE_KEY, JSON.stringify(initData));
   return await AsyncStorage.getItem(APP_STORAGE_KEY);
 };
 
 export const resetStorage = async () => {
-  const json = JSON.stringify(initData);
-  await AsyncStorage.setItem(APP_STORAGE_KEY, json);
+  await AsyncStorage.removeItem(APP_STORAGE_KEY);
 };
 
 let initData = {
